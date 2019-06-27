@@ -56,10 +56,12 @@ def ponernum(ltecla_nom, pantalla, expresion):
        pantalla = pantalla en donde se dibujara
        expresion = la expresion en la que se guardara la letra escrita.'''
     letra_arial = pygame.font.SysFont('arial',35)
-    pantalla.blit(letra_arial.render(str(ltecla_nom),True,(0,0,0)), (10,10))
+    for numeros in expresion:
+        if numeros < expresion.__len__():
+            pantalla.blit(letra_arial.render(str(expresion[numeros - 1]),True,(0,0,0)), (10,10))
+            numeros += 1
     expresion.append(ltecla_nom)
     print(expresion)
-    return expresion
 # Funcion principal
 def main():
     '''IMAGENES_BOTONES'''
@@ -177,9 +179,7 @@ def main():
             presionada(cero_a, pantalla, evento, cero_p, expresion, 0)
         '''Fin fragmento sobre de'''   
         pygame.display.update()
-
-        
-        
+    pantalla.blit(letra_arial.render(str(expresion),True,(0,0,0)), (10,10))
 
 if __name__ == '__main__':
     main()
