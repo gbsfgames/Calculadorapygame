@@ -26,15 +26,18 @@ tecla = None
 tecla_nom = None
 #--------------------------funciones
 # Clase de tecla
-class tecla():
-    presionado = False
-    encima = False
-
-    def posicion(col = 0,fill = 0):
+class tecla:
+    #  recuerda que siempre que se inicie una clase debo de agregar el init y como parametro agregar self
+    def __init__(self):
+        self.caracter = pygame.image.load('calculadora/null.png')
+        self.presionado = False
+        self.encima = False
+        self.position = (position(1,2))
+    def posicion(self, col = 0,fill = 0):
         return ((col,fill))
-    def imagen(tecla = pygame.image.load('calculadora/null.png')):
+    def imagen(self, caracter):
         return (tecla)
-    
+
 def presionada(tecla, pantalla,evento,posicion, expresion,qtecla):
     '''tecla = tiene que ser surface
        pantalla = es la pantalla principal
@@ -55,14 +58,20 @@ def ponernum(ltecla_nom, pantalla, expresion):
     '''ltecla = numero de tecla
        pantalla = pantalla en donde se dibujara
        expresion = la expresion en la que se guardara la letra escrita.'''
-    letra_arial = pygame.font.SysFont('arial',35)
-    for numeros in expresion:
-        if numeros < expresion.__len__():
-            pantalla.blit(letra_arial.render(str(expresion[numeros - 1]),True,(0,0,0)), (10,10))
-            numeros += 1
+##    for numeros in expresion:
+##        if numeros < expresion.__len__():
+##            numeros += 1
     expresion.append(ltecla_nom)
     print(expresion)
+    return expresion
+
+def imprpant(pantalla,expresion):
+    for e in expresion:
+        e+=0
+    letra_arial = pygame.font.SysFont('arial',35)
+    pantalla.blit(letra_arial.render(str(e),True,(0,0,0)), (10,10))
 # Funcion principal
+
 def main():
     '''IMAGENES_BOTONES'''
     cero = pygame.image.load('./calculadora/0.png')
@@ -76,14 +85,17 @@ def main():
     ocho8 = pygame.image.load('./calculadora/8.png')
     nueve9 = pygame.image.load('./calculadora/9.png')
     nullimg = pygame.image.load('./calculadora/null.png')
+    
     '''Tamanio de una tecla'''
     tam_tec = nullimg.get_size()
+    
     '''Imagen pantalla'''
     llita = pygame.image.load('./calculadora/Pantalla.png')
     cllita = pygame.transform.scale(llita,(190, 40))
+    
     '''Codigo principal'''
     ready = True
-    expresion = []
+    expresion = [0]
     pantalla = pygame.display.set_mode((ancho,alto))
     while ready ==True:
         #for evento in pygame.event.get():
@@ -96,8 +108,10 @@ def main():
         
         '''Relleno'''
         pantalla.fill((225,225,225))
+        
         '''Pantallita'''
-        pantalla.blit(cllita,(5,10)) 
+        pantalla.blit(cllita,(5,10))
+        
         '''Numeros a pantalla'''
         pantalla.blit(siete7,(col1,fil1))
         pantalla.blit(ocho8,(col2,fil1))
@@ -109,17 +123,26 @@ def main():
         pantalla.blit(dos2,(col2,fil3))
         pantalla.blit(tres3,(col3,fil3))
         pantalla.blit(cero,(col2,fil4))
+        imprpant(pantalla, expresion)
+        
         if evento.type == KEYDOWN:
             if evento.key == K_a:
                 print(dir(siete7))
-        mouse_pos = pygame.mouse.get_pos()#obtengo la posicion del mouse
+        '''obtengo la posicion del mouse'''
+        mouse_pos = pygame.mouse.get_pos()
+        '''Asigno como default el valor de false a mis teclas'''
         arriba = False
+
         '''Fragmento de codigo que da el efecto de estar sobre una tecla'''
         #Tecla 7
         if(mouse_pos[0] >=col1 and mouse_pos[1] >= fil1 and mouse_pos[0]<=(col1 + tam_tec[0]) and mouse_pos[1]<=(fil1 + tam_tec[1])):
+            ''' si el mouse esta arriba de mi tecla'''
             arriba = True
+            ''' efecto de zoom de tecla'''
             siete7_a = pygame.transform.smoothscale(siete7,(tam_tec[0]+6,tam_tec[1]+6))
+            '''posicion de mi tecla que se va a presionar'''
             siete7_p = (col1-3,fil1-3)
+            '''Llamada a la funcion y puesta de parametros'''
             presionada(siete7_a, pantalla, evento,siete7_p, expresion, 7)
             
                                     
@@ -183,3 +206,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    ponernum()
