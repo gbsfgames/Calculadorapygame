@@ -51,25 +51,24 @@ def presionada(tecla, pantalla,evento,posicion, expresion,qtecla):
             tecla.set_alpha(70)
             tecla.fill((0,0,0))
             pantalla.blit(tecla,posicion)
-            ponernum(qtecla, pantalla, expresion)            
+            expresion.append(qtecla)
     return 0
-
-def ponernum(ltecla_nom, pantalla, expresion):
-    '''ltecla = numero de tecla
-       pantalla = pantalla en donde se dibujara
-       expresion = la expresion en la que se guardara la letra escrita.'''
-##    for numeros in expresion:
-##        if numeros < expresion.__len__():
-##            numeros += 1
-    expresion.append(ltecla_nom)
-    print(expresion)
-    return expresion
-
+def numer(expresion):
+    numero = None
+    for num in range(len(expresion)):
+        numero = num
+    return numero
 def imprpant(pantalla,expresion):
-    for e in expresion:
-        e+=0
+    l_ini = 10
+    v_ini = 10
+    espaciado = 0
+    numero = 0
+    for num in range(len(expresion)):
+        numero = num
+        l_ini = l_ini + 20
     letra_arial = pygame.font.SysFont('arial',35)
-    pantalla.blit(letra_arial.render(str(e),True,(0,0,0)), (10,10))
+    pantalla.blit(letra_arial.render(str(expresion[numero]),True,(0,0,0)), (l_ini,v_ini))
+    return 0
 # Funcion principal
 
 def main():
@@ -123,6 +122,7 @@ def main():
         pantalla.blit(dos2,(col2,fil3))
         pantalla.blit(tres3,(col3,fil3))
         pantalla.blit(cero,(col2,fil4))
+        '''imprimir en pantalla de calculadora'''
         imprpant(pantalla, expresion)
         
         if evento.type == KEYDOWN:
@@ -206,4 +206,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    ponernum()
