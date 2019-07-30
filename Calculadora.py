@@ -17,24 +17,27 @@ fil1 = 60
 fil2 = fil1 + 45
 fil3 = fil1 + 90
 fil4 = fil1 + 135
+fil5 = fil1 + 175
 
 #--------------------------Constantes
 
 ancho = 200
-alto = 270
+alto = 290
 tecla = None
 tecla_nom = None
 #--------------------------funciones
 # Clase de tecla
 class tecla:
     #  recuerda que siempre que se inicie una clase debo de agregar el init y como parametro agregar self
-    def __init__(self):
-        self.caracter = pygame.image.load('calculadora/null.png')
-        self.presionado = False
-        self.encima = False
-        self.position = (position(1,2))
-    def posicion(self, col = 0,fill = 0):
-        return ((col,fill))
+    def __init__(self,ruta,posi,presionado=False,encima=False):
+        self.caracter = pygame.image.load(ruta)
+        self.presionado = presionado
+        self.encima = encima
+        self.pos = posi
+    def poner(self,pantalla):
+        '''Si pongo la palabra self antes de cada parametro que necesito que tome
+           parece no haber error, pero aun me queda duda de como es que fuinciona'''
+        pantalla.blit(self.caracter,self.pos)
     def imagen(self, caracter):
         return (tecla)
 
@@ -58,6 +61,7 @@ def numer(expresion):
     for num in range(len(expresion)):
         numero = num
     return numero
+
 def imprpant(pantalla,expresion):
     l_ini = 10
     v_ini = 10
@@ -84,6 +88,8 @@ def main():
     ocho8 = pygame.image.load('./calculadora/8.png')
     nueve9 = pygame.image.load('./calculadora/9.png')
     nullimg = pygame.image.load('./calculadora/null.png')
+    '''se declara primer tecla con clase...'''
+    borrar = tecla('./calculadora/null.png',(col3,fil5),False,False)
     
     '''Tamanio de una tecla'''
     tam_tec = nullimg.get_size()
@@ -122,6 +128,8 @@ def main():
         pantalla.blit(dos2,(col2,fil3))
         pantalla.blit(tres3,(col3,fil3))
         pantalla.blit(cero,(col2,fil4))
+        '''primer clase implementada'''
+        borrar.poner(pantalla)
         '''imprimir en pantalla de calculadora'''
         imprpant(pantalla, expresion)
         
@@ -200,9 +208,14 @@ def main():
             cero_a = pygame.transform.smoothscale(cero,(tam_tec[0]+6,tam_tec[1]+6))
             cero_p = (col2-3,fil4-3)
             presionada(cero_a, pantalla, evento, cero_p, expresion, 0)
-        '''Fin fragmento sobre de'''   
+        '''Fin fragmento sobre de'''
+        #Tecla borrar
+        if(mouse_pos[0] >=col3 and mouse_pos[1] >= fil5 and mouse_pos[0]<=(col3 + tam_tec[0]) and mouse_pos[1]<=(fil5 + tam_tec[1])):
+            borrar.encima = True
+            '''implementar el transform para lograr efecto de sobre del boton borrar ya existe una funcion presionada, solo implementarla en la clase
+               se necesita cambiar el boton de posicion tres unidades negativamente en eje  x y y'''
+            
         pygame.display.update()
-    pantalla.blit(letra_arial.render(str(expresion),True,(0,0,0)), (10,10))
 
 if __name__ == '__main__':
     main()
